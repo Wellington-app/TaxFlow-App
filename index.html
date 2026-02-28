@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#4F46E5" />
+    <title>TaxFlow - Gestão Tributária</title>
+  </head>
+    <div id="root">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; color: #6366f1; background: #F8FAFC;">
+        <div style="text-align: center; padding: 20px;">
+          <div id="spinner" style="width: 40px; height: 40px; border: 4px solid #e0e7ff; border-top: 4px solid #6366f1; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+          <p id="loading-text" style="font-weight: 600; margin: 0;">TaxFlow</p>
+          <p id="debug-info" style="font-size: 11px; color: #94a3b8; margin-top: 10px; background: #f1f5f9; padding: 8px; border-radius: 4px; min-width: 200px;">Iniciando sistema...</p>
+          <div id="timeout-msg" style="display: none; margin-top: 15px; font-size: 12px; color: #64748b;">
+            O carregamento está demorando mais que o esperado.<br>
+            <button onclick="window.location.reload()" style="margin-top: 10px; color: #6366f1; background: none; border: 1px solid #6366f1; padding: 5px 10px; border-radius: 4px;">Recarregar App</button>
+          </div>
+        </div>
+      </div>
+      <script>
+        window.onerror = function(msg, url, line) {
+          var debug = document.getElementById('debug-info');
+          if (debug) debug.innerHTML = '<span style="color: #ef4444;">Erro: ' + msg + '</span>';
+          return false;
+        };
+
+        // Timeout de 10 segundos
+        setTimeout(function() {
+          var timeoutMsg = document.getElementById('timeout-msg');
+          if (timeoutMsg && document.getElementById('spinner')) {
+            timeoutMsg.style.display = 'block';
+          }
+        }, 10000);
+
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('debug-info').innerHTML = 'Módulos carregados, iniciando interface...';
+        });
+
+        window.hideLoadingScreen = function() {
+          var root = document.getElementById('root');
+          root.innerHTML = ''; 
+          console.log('React OK');
+        };
+      </script>
+      <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      </style>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
