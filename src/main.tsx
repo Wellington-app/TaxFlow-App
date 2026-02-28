@@ -2,18 +2,26 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// Only register SW on web
-if (typeof window !== 'undefined' && 'serviceWorker' in navigator && !window.location.href.startsWith('file:')) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
-  });
-}
+// Minimal status update
+const status = document.getElementById('status');
+if (status) status.innerHTML = 'Iniciando interface...';
 
 const container = document.getElementById('root');
 if (container) {
-  // Hide the HTML loading screen before rendering React
-  if (window.hideLoadingScreen) window.hideLoadingScreen();
-  
   const root = createRoot(container);
-  root.render(<App />);
+  try {
+    // We render App. If it fails, the global error handler in index.html will catch it
+    // or we can catch it here.
+    root.render(<App />);
+    
+    // Clear status after a short delay if render seems successful
+    setTimeout(() => {
+      const s = document.getElementById('status');
+      if (s && s.innerHTML === 'Iniciando interface...') {
+        // If it's still there, maybe it's stuck? But usually React takes over.
+      }
+    }, 2000);
+  } catch (e) {
+    if (status) status.innerHTML = `<span style="color:red">Erro React: ${e}</span>`;
+  }
 }
