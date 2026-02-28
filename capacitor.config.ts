@@ -4,6 +4,8 @@ const config: CapacitorConfig = {
   appId: 'com.taxflow.app',
   appName: 'TaxFlow',
   webDir: 'dist',
+  bundledWebRuntime: false
+}
   server: {
     androidScheme: 'https'
   }
